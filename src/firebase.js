@@ -1,16 +1,22 @@
-import firebase from 'firebase';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
+// Configure via .env (see .env.example). Firebase web config is not a
+// secret, but keeping it out of the source makes the project reusable.
 const firebaseConfig = {
-    apiKey: "AIzaSyC3G06thGWZg-bgtGgxmLw1uof-J-4J4U0",
-    authDomain: "tiktok-clone-70c14.firebaseapp.com",
-    databaseURL: "https://tiktok-clone-70c14.firebaseio.com",
-    projectId: "tiktok-clone-70c14",
-    storageBucket: "tiktok-clone-70c14.appspot.com",
-    messagingSenderId: "805594903690",
-    appId: "1:805594903690:web:0f46c68106bc69325a6973",
-    measurementId: "G-QECR1LLVX9"
-  };
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
 
-  const firebaseApp= firebase.initializeApp(firebaseConfig);
+let db = null;
 
-  const db = firebaseApp.firestore();
-  export default db;
+if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+  const firebaseApp = initializeApp(firebaseConfig);
+  db = getFirestore(firebaseApp);
+}
+
+export default db;
